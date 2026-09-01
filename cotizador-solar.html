@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta name="description" content="Cotizador solar para calcular precios de paneles solares">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>NAHIEnergia - Cotiza tu sistema solar de energía limpia</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+    <link href="css/estilos.css" rel="stylesheet"/>
+</head>
+<body>
+    <header class="hero">
+        <div class="overlay">
+            <img alt="Logo NAHI" class="logo" src="img/logo-nahi.png"/>
+            <div class="hero-text">
+                <h1 class="titulo-ajustado">COTIZADOR SOLAR</h1>
+                <a class="boton" href="index.html">← Regresar al Inicio</a>
+            </div>
+        </div>
+    </header>
+    <section class="container">
+        <h2>¿Cómo leer tu recibo de CFE?</h2>
+        <p>Antes de que ingreses tus datos, es importante entender los detalles de tu recibo de CFE para que puedas ingresar correctamente tu consumo y pago promedio. A continuación te mostramos los datos más importantes que debes tener en cuenta:</p>
+        
+        <ul>
+            <li><strong>Consumo Bimestral:</strong> Es la cantidad de energía eléctrica consumida en el periodo bimestral, medida en kWh (kilovatios hora). Este valor es crucial para calcular tu cotización solar.</li>
+            <li><strong>Tarifa:</strong> Asegúrate de conocer la tarifa que se te aplica, ya sea doméstica, comercial, etc. Esto afectará el cálculo de tu ahorro.</li>
+            <li><strong>Cargos adicionales:</strong> Además del consumo, tu recibo puede incluir otros cargos como impuestos o cargos por servicios adicionales. Asegúrate de conocer el monto total que pagas.</li>
+        </ul>
+
+        <p>Si no tienes tu recibo a la mano, puedes obtener estos datos en tu última factura de CFE. Si tienes dudas sobre cómo obtenerlos, contáctanos.</p>
+        
+        <h3>Ejemplo de Recibo:</h3>
+        <img src="img/CFE.png" alt="Ejemplo de recibo CFE" style="max-width: 100%; height: auto; border-radius: 8px;">
+    </section>
+    
+    <main class="main-content">
+        <section class="container">
+            <h2>Ingresa tus datos</h2>
+            <form id="cotizador-form">
+                <!-- Campo Nombre del Cliente con el mismo estilo que los otros -->
+                <div class="campo" style="display: flex; flex-direction: column; margin-bottom: 1rem;">
+                    <label for="cliente" style="margin-bottom: 4px; font-size: clamp(14px, 4vw, 16px);">Nombre del Cliente:</label>
+                    <input id="cliente" name="cliente" required type="text" 
+                           style="padding: 12px; font-size: 16px; width: 100%; box-sizing: border-box; min-height: 44px;"/>
+                </div>
+
+                <div class="campo" style="margin-top:.5rem;">
+                    <label for="tipoRed">Tipo de Inversor:</label>
+                    <select id="tipoRed" name="tipoRed" required>
+                        <option value="bifasica">Bifásica</option>
+                        <option selected value="microinversor">Microinversor</option>
+                        <option value="hibrido">Híbrido</option>
+                        <option value="trifasica">Trifásica</option>
+                    </select>
+                    <div class="campo" style="margin-top:.5rem;"></div>
+
+                    <label for="panel" class="label-panel">Tipo de Panel:</label>
+                    <select id="panel" name="panel" required class="select-panel">
+                        <option selected value="625W-Bifacial">625W-Bifacial</option>
+                        <option value="615W-Bifacial">615W-Bifacial</option>
+                        <option value="710W-Bifacial">710W-Bifacial</option>
+                        <option value="510W-Flexible">510W-Flexible</option>
+                    </select>
+                    <div class="campo" style="margin-top:.5rem;"></div>
+
+                    <label for="bateria" id="labelBateria" style="display: none;">¿Deseas agregar una batería?</label>
+                    <select id="bateria" name="bateria" style="display: none;">
+                        <option value="no">No</option>
+                        <option value="si">Sí</option>
+                    </select>
+                </div>
+
+                <div class="grupo-campos" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; align-items: end;">
+                    <!-- consumo -->
+                    <div class="campo" style="display: flex; flex-direction: column; margin-bottom: 1rem;">
+                        <label for="consumo" style="margin-bottom: 4px; font-size: clamp(14px, 4vw, 16px);">Consumo bimestral Promedio (kWh):</label>
+                        <input id="consumo" name="consumo" required type="number" 
+                               style="padding: 12px; font-size: 16px; width: 100%; box-sizing: border-box; appearance: textfield; min-height: 44px;"/>
+                    </div>
+
+                    <!-- pago -->
+                    <div class="campo" style="display: flex; flex-direction: column; margin-bottom: 1rem;">
+                        <label for="pago" style="margin-bottom: 4px; font-size: clamp(14px, 4vw, 16px);">Pago bimestral Promedio <span style="color: gray; font-weight: normal;">(opcional)</span>:</label>
+                        <input id="pago" name="pago" type="number" 
+                               style="padding: 12px; font-size: 16px; width: 100%; box-sizing: border-box; appearance: textfield; min-height: 44px;"/>
+                    </div>
+                </div>
+
+                <!-- porcentaje a cubrir -->
+                <div class="campo" style="display: flex; flex-direction: column; max-width: 200px;">
+                    <label for="porcentaje-cubrir" style="margin-bottom: 4px;">% de consumo a cubrir:</label>
+                    
+                    <div style="display: flex; align-items: center; border: 1px solid #ccc; border-radius: 4px; height: 38px; overflow: hidden; width: 50%;">
+                        <input id="porcentaje-cubrir" name="porcentaje-cubrir" type="number" min="0" max="200" value="100"
+                               style="flex: 1; border: none; outline: none; font-size: 1rem; height: 100%; text-align: right; padding-right: 4px;"/>
+                        <span style="background:#f5f5f5; padding: 0 8px; font-weight: bold; color: #111; border-left: 1px solid #ccc; height: 100%; display: flex; align-items: center;">%</span>
+                    </div>
+                </div>
+
+                <button class="boton" type="submit">Calcular</button>
+            </form>
+        </section>
+
+        <div class="card-resumen">
+            <section class="resultados" id="resultado" style="display:none;"></section>
+        </div>
+
+        <div class="card-resumen">
+            <section id="roiSection" style="display: none;">
+                <h3 style="text-align: center; font-size: 2.5rem; font-weight: bold; margin-bottom: -.5rem;">
+                    Retorno de Inversión (ROI)
+                </h3>
+                <div class="tabla-responsive">
+                    <table id="roiTable">
+                        <thead>
+                            <tr>
+                                <th>Año</th>
+                                <th>Precio kWh</th>
+                                <th>Ahorro Anual</th>
+                                <th>Ahorro Real</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div id="roiResultado" style="margin-top: 1rem;"></div>
+                <div style="margin-top: 1rem;">
+                    <button class="boton" id="btnPDF">Generar PDF</button>
+                    <button class="boton" id="btnFinanciamiento">Plan de Pagos a Meses</button>
+                </div>
+            </section>
+        </div>
+
+        <!-- ✅ nuevo contenedor exclusivo para financiamiento -->
+        <section id="financiamientoContainer" class="container2" style="display: none;">
+            <!-- el contenido dinámico del financiamiento se inyectará aquí -->
+        </section>
+
+        <div style="margin-top: 1rem;"></div>
+    </main>
+
+    <footer style="color: #04192d; padding: 2rem 1rem; text-align: center; border-top: 8px solid #f9c846;">
+        <div style="max-width: 900px; margin: auto;">
+            <p style="font-size: 1.1rem; margin: 0.5rem 0;"><strong>Contáctanos</strong></p>
+            <p style="margin: 0.25rem 0;">
+                📧 <a href="mailto:adm@nahienergia.com" style="color: #f0f1f2; text-decoration: none;">adm@nahienergia.com</a>
+            </p>
+            <p style="margin: 0.25rem 0;">
+                📞 <a href="tel:3311866965" style="color: #f0f1f2; text-decoration: none;">33 1186 6965</a>
+            </p>
+            <p style="margin-top: 1rem; font-size: 0.9rem;">© 2025 Energía Solar NAHI. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <a class="boton-whatsapp" href="https://wa.me/523311866965" target="_blank" title="Escríbenos por WhatsApp">
+        <img alt="WhatsApp" src="img/whatsapp-icon.png"/>
+    </a>
+
+    <!-- Librerías necesarias -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="js/cotizador.js"></script>
+</body>
+</html>
